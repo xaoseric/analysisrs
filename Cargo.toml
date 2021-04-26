@@ -10,6 +10,3 @@ diesel = { version = "1.4.4", features = ["mysql"] }
 dotenv = "0.15.0"
 csv = "1.1"
 serde = { version = "1", features = ["derive"] }
-
-[build-dependencies]
-cc = "1.0.46"
