@@ -10,7 +10,6 @@ dependencies = [
  "csv",
  "diesel",
  "dotenv",
- "mysqlclient-sys",
  "serde",
 ]
 
