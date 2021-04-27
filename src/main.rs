@@ -3,6 +3,7 @@ extern crate diesel;
 extern crate dotenv;
 extern crate csv;
 extern crate serde;
+extern crate mysql;
 
 pub mod models;
 pub mod schema;

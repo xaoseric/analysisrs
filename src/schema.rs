@@ -1,6 +1,6 @@
 table! {
     titanic_analytics (passenger_id) {
-        passenger_id -> Unsigned<Integer>,
+        passenger_id -> Integer,
         survived -> Nullable<Integer>,
         pclass -> Nullable<Integer>,
         name -> Nullable<Varchar>,

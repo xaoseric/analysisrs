@@ -1,6 +1,6 @@
 -- Your SQL goes here
 CREATE TABLE IF NOT EXISTS `titanic_analytics` (
-    `passenger_id` int(11) unsigned NOT NULL,
+    `passenger_id` int(11) NOT NULL,
     `survived` int(11) DEFAULT NULL,
     `pclass` int(11) DEFAULT NULL,
     `name` varchar(500) DEFAULT NULL,
