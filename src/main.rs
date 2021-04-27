@@ -1,7 +1,11 @@
+#[macro_use]
 extern crate diesel;
 extern crate dotenv;
 extern crate csv;
 extern crate serde;
+
+pub mod models;
+pub mod schema;
 
 use diesel::prelude::*;
 use diesel::mysql::MysqlConnection;
@@ -9,34 +13,8 @@ use dotenv::dotenv;
 use std::env;
 use std::error::Error;
 use serde::Deserialize;
+use self::models::{TitanicData};
 
-#[derive(Debug, Deserialize)]
-struct TitanicAnalytic {
-    #[serde(alias = "PassengerId")]
-    passenger_id: u32,
-    #[serde(alias = "Survived")]
-    survived: u32,
-    #[serde(alias = "Pclass")]
-    pclass: u32,
-    #[serde(alias = "Name")]
-    name: String,
-    #[serde(alias = "Sex")]
-    sex: String,
-    #[serde(alias = "Age")]
-    age: Option<f32>,
-    #[serde(alias = "SibSp")]
-    sibsp: u32,
-    #[serde(alias = "Parch")]
-    parch: u32,
-    #[serde(alias = "Ticket")]
-    ticket: String,
-    #[serde(alias = "Fare")]
-    fare: f32,
-    #[serde(alias = "Cabin")]
-    cabin: Option<String>,
-    #[serde(alias = "Embarked")]
-    embarked: String
-}
 
 /// Establishes the connection to teh database
 fn establish_connection() -> MysqlConnection {
@@ -48,7 +26,7 @@ fn establish_connection() -> MysqlConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
-fn read_titanic_file(path: &str) -> Result<(), Box<dyn Error>> {
+fn read_titanic_file(path: &str, conn: &MysqlConnection) -> Result<(), Box<dyn Error>> {
     // Creates a new csv `Reader` from a file
     let mut reader = csv::Reader::from_path(path)?;
 
@@ -58,7 +36,7 @@ fn read_titanic_file(path: &str) -> Result<(), Box<dyn Error>> {
     // `.deserialize` returns an iterator of the internal
     // record structure deserialized
     for result in reader.deserialize() {
-        let record: TitanicAnalytic = result?;
+        let record: TitanicData = result?;
         println!("{:?}", record);
     }
 
@@ -85,13 +63,13 @@ fn main() {
     println!("Connecting to database...");
 
     // connect to database
-    establish_connection();
+    let connection = establish_connection();
 
     // read data from csv files and insert into database
     println!("Inserting Titanic Analysis Data...");
 
     // if an error occurs, print the error
-    if let Err(e) = read_titanic_file("./data/titanic_analytics.csv") {
+    if let Err(e) = read_titanic_file("./data/titanic_analytics.csv", &connection) {
         eprintln!("{}", e);
     }
 

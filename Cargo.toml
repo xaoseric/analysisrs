@@ -6,8 +6,9 @@ authors = ["Eric Hocking <ehock7229@outlook.com>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-diesel = { version = "1.4.4", features = ["mysql"] }
+diesel = { version = "1.4.4", features = ["mysql", "numeric"] }
 dotenv = "0.15.0"
 csv = "1.1"
 serde = { version = "1", features = ["derive"] }
 mysqlclient-sys = { version = "0.2.0" }
+serde_json = "1.0.64"
