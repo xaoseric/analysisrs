@@ -1,4 +1,18 @@
 table! {
+    stock_history (id) {
+        id -> Unsigned<Integer>,
+        ticker -> Varchar,
+        date -> Date,
+        high -> Float,
+        low -> Float,
+        open -> Float,
+        close -> Float,
+        volume -> Float,
+        adj_close -> Float,
+    }
+}
+
+table! {
     titanic_analytics (passenger_id) {
         passenger_id -> Integer,
         survived -> Nullable<Integer>,
@@ -14,3 +28,8 @@ table! {
         embarked -> Nullable<Varchar>,
     }
 }
+
+allow_tables_to_appear_in_same_query!(
+    stock_history,
+    titanic_analytics,
+);
