@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `titanic_analytics` (
     `sibsp` int(11) DEFAULT NULL,
     `parch` int(11) DEFAULT NULL,
     `ticket` varchar(255) DEFAULT NULL,
-    `fare` decimal(10,2) DEFAULT NULL,
+    `fare` float DEFAULT NULL,
     `cabin` varchar(255) DEFAULT NULL,
     `embarked` varchar(10) DEFAULT NULL,
     PRIMARY KEY (`passenger_id`)
