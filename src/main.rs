@@ -14,7 +14,7 @@ use dotenv::dotenv;
 use std::env;
 use std::error::Error;
 use serde::Deserialize;
-use self::models::{TitanicData};
+use models::titanic::{TitanicAnalytic};
 
 
 /// Establishes the connection to teh database
@@ -37,7 +37,7 @@ fn read_titanic_file(path: &str, conn: &MysqlConnection) -> Result<(), Box<dyn E
     // `.deserialize` returns an iterator of the internal
     // record structure deserialized
     for result in reader.deserialize() {
-        let record: TitanicData = result?;
+        let record: TitanicAnalytic = result?;
         println!("{:?}", record);
     }
 
