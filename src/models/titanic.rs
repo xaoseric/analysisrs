@@ -1,7 +1,10 @@
 use serde::Deserialize;
-use crate::schema;
+use diesel::mysql::MysqlConnection;
+use crate::schema::titanic_analytics;
+use diesel::RunQueryDsl;
 
-#[derive(Debug, Queryable, Deserialize)]
+#[derive(Debug, Insertable, Deserialize)]
+#[table_name = "titanic_analytics"]
 pub struct TitanicAnalytic {
     #[serde(alias = "PassengerId")]
     pub passenger_id: i32,
@@ -27,4 +30,11 @@ pub struct TitanicAnalytic {
     pub cabin: Option<String>,
     #[serde(alias = "Embarked")]
     pub embarked: Option<String>
+}
+
+pub fn create_new_titanic_analytic(conn: &MysqlConnection, data: &TitanicAnalytic) {
+    diesel::insert_into(titanic_analytics::table)
+        .values(data)
+        .execute(conn)
+        .expect("Could not create new Titanic Analytic record");
 }

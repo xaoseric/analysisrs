@@ -9,7 +9,7 @@ table! {
         sibsp -> Nullable<Integer>,
         parch -> Nullable<Integer>,
         ticket -> Nullable<Varchar>,
-        fare -> Nullable<Decimal>,
+        fare -> Nullable<Float>,
         cabin -> Nullable<Varchar>,
         embarked -> Nullable<Varchar>,
     }

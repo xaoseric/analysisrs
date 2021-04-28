@@ -3,7 +3,6 @@ extern crate diesel;
 extern crate dotenv;
 extern crate csv;
 extern crate serde;
-extern crate mysql;
 
 pub mod models;
 pub mod schema;
@@ -13,8 +12,7 @@ use diesel::mysql::MysqlConnection;
 use dotenv::dotenv;
 use std::env;
 use std::error::Error;
-use serde::Deserialize;
-use models::titanic::{TitanicAnalytic};
+use models::titanic::{TitanicAnalytic, create_new_titanic_analytic};
 
 
 /// Establishes the connection to teh database
@@ -27,18 +25,18 @@ fn establish_connection() -> MysqlConnection {
         .expect(&format!("Error connecting to {}", database_url))
 }
 
+/// Reads the titanic csv file and inserts the data into MySQL backend
 fn read_titanic_file(path: &str, conn: &MysqlConnection) -> Result<(), Box<dyn Error>> {
     // Creates a new csv `Reader` from a file
     let mut reader = csv::Reader::from_path(path)?;
 
-    // Retrieve headers from file
-    let headers = reader.headers();
 
     // `.deserialize` returns an iterator of the internal
     // record structure deserialized
     for result in reader.deserialize() {
         let record: TitanicAnalytic = result?;
-        println!("{:?}", record);
+        create_new_titanic_analytic(conn, &record);
+        //println!("{:?}", record);
     }
 
     Ok(())
@@ -74,6 +72,7 @@ fn main() {
         eprintln!("{}", e);
     }
 
+    println!("Titanic Analytic Data inserted successfully!");
     println!("Inserting Cruises Analysis Data...");
     //read_cruises_file("");
 }
