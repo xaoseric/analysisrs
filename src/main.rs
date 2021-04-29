@@ -15,6 +15,7 @@ use std::env;
 use std::error::Error;
 use models::titanic::{TitanicAnalytic, create_new_titanic_analytic};
 use models::stock_history::{StockData, create_stock_history};
+use models::cruise_data::{CruiseData, create_cruise_data};
 use clap::{Arg, App};
 
 /// Establishes the connection to teh database
@@ -38,7 +39,6 @@ fn read_titanic_file(path: &str, conn: &MysqlConnection) -> Result<(), Box<dyn E
     for result in reader.deserialize() {
         let record: TitanicAnalytic = result?;
         create_new_titanic_analytic(conn, &record);
-        //println!("{:?}", record);
     }
 
     Ok(())
@@ -55,27 +55,24 @@ fn read_stock_file(path: &str, ticker: &str, conn: &MysqlConnection) -> Result<(
     for result in reader.deserialize() {
         let record: StockData = result?;
         create_stock_history(conn, ticker, record);
-        //println!("{:?}", record);
     }
 
     Ok(())
 }
 
-/*fn read_cruises_file(path: &str) -> Result<(), Box<dyn Error>> {
+fn read_cruises_file(path: &str, conn: &MysqlConnection) -> Result<(), Box<dyn Error>> {
     // Creates a new csv `Reader` from a file
     let mut reader = csv::Reader::from_path(path)?;
 
-    // Retrieve headers from file
-    let headers = reader.headers();
-
     // `.deserialize` returns an iterator of the internal
     // record structure deserialized
-    /*for result in reader.deserialize() {
-        //todo: Read into a struct and insert record into database
-    }*/
+    for result in reader.deserialize() {
+        let record: CruiseData = result?;
+        create_cruise_data(conn, record);
+    }
 
     Ok(())
-}*/
+}
 
 fn main() {
     let mut titanic_analytic_data = true;
@@ -148,7 +145,12 @@ fn main() {
 
     if cruise_analytic_data {
         println!("Inserting Cruises Analysis Data...");
-    }
 
-    //read_cruises_file("");
+        // if an error occurs, print the error
+        if let Err(e) = read_cruises_file("./data/CruiseData.csv", &connection) {
+            eprintln!("{}", e);
+        }
+
+        println!("Cruise Analysis Data inserted successfully!");
+    }
 }

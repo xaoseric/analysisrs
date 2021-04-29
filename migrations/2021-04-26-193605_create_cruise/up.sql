@@ -11,3 +11,13 @@ CREATE TABLE IF NOT EXISTS `stock_history` (
     `adj_close` float NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `cruise_data` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `brand` varchar(300) NOT NULL,
+    `total_passengers` float NOT NULL,
+    `passengers_percentage` float NOT NULL,
+    `revenue` float NOT NULL,
+    `revenue_percentage` float NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

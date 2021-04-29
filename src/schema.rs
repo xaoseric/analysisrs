@@ -1,4 +1,15 @@
 table! {
+    cruise_data (id) {
+        id -> Unsigned<Integer>,
+        brand -> Varchar,
+        total_passengers -> Float,
+        passengers_percentage -> Float,
+        revenue -> Float,
+        revenue_percentage -> Float,
+    }
+}
+
+table! {
     stock_history (id) {
         id -> Unsigned<Integer>,
         ticker -> Varchar,
@@ -30,6 +41,7 @@ table! {
 }
 
 allow_tables_to_appear_in_same_query!(
+    cruise_data,
     stock_history,
     titanic_analytics,
 );
